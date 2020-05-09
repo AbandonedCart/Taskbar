@@ -66,6 +66,7 @@ public class AppearanceFragment extends SettingsFragment {
 
         bindPreferenceSummaryToValue(findPreference("theme"));
         bindPreferenceSummaryToValue(findPreference("invisible_button"));
+        bindPreferenceSummaryToValue(findPreference("start_collapsed"));
         bindPreferenceSummaryToValue(findPreference("start_button_image"));
         bindPreferenceSummaryToValue(findPreference("icon_pack_use_mask"));
         bindPreferenceSummaryToValue(findPreference("visual_feedback"));
@@ -75,6 +76,8 @@ public class AppearanceFragment extends SettingsFragment {
 
         findPreference("background_tint_pref").setSummary("#" + String.format("%08x", U.getBackgroundTint(getActivity())).toUpperCase());
         findPreference("accent_color_pref").setSummary("#" + String.format("%08x", U.getAccentColor(getActivity())).toUpperCase());
+
+        findPreference("start_collapsed").setEnabled(pref.getBoolean("launcher", false));
 
         finishedLoadingPrefs = true;
     }

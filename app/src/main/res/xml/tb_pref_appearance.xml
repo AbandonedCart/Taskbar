@@ -50,6 +50,11 @@
         android:defaultValue="false"
         android:key="invisible_button"
         android:title="@string/tb_pref_title_invisible_button"/>
+		
+	<CheckBoxPreference
+        android:defaultValue="false"
+        android:key="start_collapsed"
+        android:title="@string/tb_pref_title_start_collapsed"/>
 
     <CheckBoxPreference
         android:defaultValue="true"

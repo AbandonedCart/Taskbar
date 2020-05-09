@@ -442,5 +442,6 @@ Bu durumda, bu cihazdaki serbest biçimli modu kullanmak için özel bir ROM fla
     <string name="tb_reconnect_display">Please disconnect and reconnect your external display in order to use desktop mode.</string>
 
     <string name="tb_hide_icon_labels">Hide app icon labels</string>
+    <string name="tb_pref_title_start_collapsed">Start collapsed as home replacement</string>
 
 </resources>

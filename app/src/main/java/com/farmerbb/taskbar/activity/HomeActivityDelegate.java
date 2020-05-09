@@ -439,7 +439,9 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
             }
         } else {
             overridePendingTransition(0, R.anim.close_anim);
-            U.sendBroadcast(this, ACTION_TEMP_SHOW_TASKBAR);
+            SharedPreferences pref = U.getSharedPreferences(this);
+            U.sendBroadcast(this, pref.getBoolean("start_collapsed", false)
+                    ? ACTION_TEMP_HIDE_TASKBAR : ACTION_TEMP_SHOW_TASKBAR);
         }
     }
 
@@ -509,7 +511,8 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
 
         // Show the Taskbar temporarily, as nothing else will be visible on screen
         new Handler().postDelayed(() ->
-                U.sendBroadcast(this, ACTION_TEMP_SHOW_TASKBAR), 100);
+                U.sendBroadcast(this, pref.getBoolean("start_collapsed", false)
+                        ? ACTION_TEMP_HIDE_TASKBAR : ACTION_TEMP_SHOW_TASKBAR), 100);
     }
 
     private void startFreeformHack() {
