@@ -316,21 +316,21 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
             detector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-                    if(!pref.getBoolean("dont_show_double_tap_dialog", false)
+                    if(!pref.getBoolean(PREF_DONT_SHOW_DOUBLE_TAP_DIALOG, false)
                             && !isSecondaryHome) {
-                        if(pref.getBoolean("double_tap_to_sleep", false)) {
+                        if(pref.getBoolean(PREF_DOUBLE_TAP_TO_SLEEP, false)) {
                             U.lockDevice(HomeActivityDelegate.this);
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(U.wrapContext(HomeActivityDelegate.this));
                             builder.setTitle(R.string.tb_double_tap_to_sleep)
                                     .setMessage(R.string.tb_enable_double_tap_to_sleep)
-                                    .setNegativeButton(pref.getBoolean("double_tap_dialog_shown", false)
+                                    .setNegativeButton(pref.getBoolean(PREF_DOUBLE_TAP_DIALOG_SHOWN, false)
                                             ? R.string.tb_action_dont_show_again
-                                            : R.string.tb_action_cancel, (dialog, which) -> pref.edit().putBoolean(pref.getBoolean("double_tap_dialog_shown", false)
-                                            ? "dont_show_double_tap_dialog"
-                                            : "double_tap_dialog_shown", true).apply())
+                                            : R.string.tb_action_cancel, (dialog, which) -> pref.edit().putBoolean(pref.getBoolean(PREF_DOUBLE_TAP_DIALOG_SHOWN, false)
+                                            ? PREF_DONT_SHOW_DOUBLE_TAP_DIALOG
+                                            : PREF_DOUBLE_TAP_DIALOG_SHOWN, true).apply())
                                     .setPositiveButton(R.string.tb_action_ok, (dialog, which) -> {
-                                        pref.edit().putBoolean("double_tap_to_sleep", true).apply();
+                                        pref.edit().putBoolean(PREF_DOUBLE_TAP_TO_SLEEP, true).apply();
                                         U.lockDevice(HomeActivityDelegate.this);
                                     });
 
@@ -473,10 +473,10 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
 
     private void startTaskbar() {
         SharedPreferences pref = U.getSharedPreferences(this);
-        if(pref.getBoolean("first_run", true)) {
+        if(pref.getBoolean(PREF_FIRST_RUN, true)) {
             SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("first_run", false);
-            editor.putBoolean("collapsed", true);
+            editor.putBoolean(PREF_FIRST_RUN, false);
+            editor.putBoolean(PREF_COLLAPSED, true);
             editor.apply();
 
             dialog = U.showRecentAppsDialog(U.wrapContext(this),
@@ -702,7 +702,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
 
         try {
             SharedPreferences pref = U.getSharedPreferences(this);
-            JSONArray jsonIcons = new JSONArray(pref.getString("desktop_icons", "[]"));
+            JSONArray jsonIcons = new JSONArray(pref.getString(PREF_DESKTOP_ICONS, "[]"));
 
             for(int i = 0; i < jsonIcons.length(); i++) {
                 DesktopIconInfo info = DesktopIconInfo.fromJson(jsonIcons.getJSONObject(i));
@@ -721,7 +721,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
                     jsonIcons.remove(i);
                 }
 
-                pref.edit().putString("desktop_icons", jsonIcons.toString()).apply();
+                pref.edit().putString(PREF_DESKTOP_ICONS, jsonIcons.toString()).apply();
             }
         } catch (JSONException e) { /* Gracefully fail */ }
 
@@ -802,7 +802,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
     private void sortDesktopIcons() {
         try {
             SharedPreferences pref = U.getSharedPreferences(this);
-            JSONArray jsonIcons = new JSONArray(pref.getString("desktop_icons", "[]"));
+            JSONArray jsonIcons = new JSONArray(pref.getString(PREF_DESKTOP_ICONS, "[]"));
 
             if(jsonIcons.length() == 0) {
                 U.showToast(this, R.string.tb_no_icons_to_sort);
@@ -831,7 +831,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
                 jsonIcons.put(oldInfo.toJson(this));
             }
 
-            pref.edit().putString("desktop_icons", jsonIcons.toString()).apply();
+            pref.edit().putString(PREF_DESKTOP_ICONS, jsonIcons.toString()).apply();
             refreshDesktopIcons();
         } catch (JSONException e) { /* Gracefully fail */ }
     }
@@ -841,7 +841,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
 
         try {
             SharedPreferences pref = U.getSharedPreferences(this);
-            JSONArray jsonIcons = new JSONArray(pref.getString("desktop_icons", "[]"));
+            JSONArray jsonIcons = new JSONArray(pref.getString(PREF_DESKTOP_ICONS, "[]"));
             int iconToRemove = -1;
 
             DesktopIconInfo oldInfo = getDesktopIconInfo(startDragIndex);
@@ -860,7 +860,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
                 jsonIcons.remove(iconToRemove);
                 jsonIcons.put(newInfo.toJson(this));
 
-                pref.edit().putString("desktop_icons", jsonIcons.toString()).apply();
+                pref.edit().putString(PREF_DESKTOP_ICONS, jsonIcons.toString()).apply();
             }
         } catch (JSONException e) { /* Gracefully fail */ }
     }
@@ -868,7 +868,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
     private void enterIconArrangeMode() {
         try {
             SharedPreferences pref = U.getSharedPreferences(this);
-            JSONArray jsonIcons = new JSONArray(pref.getString("desktop_icons", "[]"));
+            JSONArray jsonIcons = new JSONArray(pref.getString(PREF_DESKTOP_ICONS, "[]"));
 
             if(jsonIcons.length() == 0) {
                 U.showToast(this, R.string.tb_no_icons_to_arrange);
