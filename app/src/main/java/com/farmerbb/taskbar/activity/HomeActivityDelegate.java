@@ -440,7 +440,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
         } else {
             overridePendingTransition(0, R.anim.close_anim);
             SharedPreferences pref = U.getSharedPreferences(this);
-            U.sendBroadcast(this, pref.getBoolean("start_collapsed", false)
+            U.sendBroadcast(this, pref.getBoolean(PREF_START_COLLAPSED, false)
                     ? ACTION_TEMP_HIDE_TASKBAR : ACTION_TEMP_SHOW_TASKBAR);
         }
     }
@@ -511,7 +511,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
 
         // Show the Taskbar temporarily, as nothing else will be visible on screen
         new Handler().postDelayed(() ->
-                U.sendBroadcast(this, pref.getBoolean("start_collapsed", false)
+                U.sendBroadcast(this, pref.getBoolean(PREF_START_COLLAPSED, false)
                         ? ACTION_TEMP_HIDE_TASKBAR : ACTION_TEMP_SHOW_TASKBAR), 100);
     }
 

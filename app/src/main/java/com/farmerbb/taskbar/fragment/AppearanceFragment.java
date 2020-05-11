@@ -68,7 +68,7 @@ public class AppearanceFragment extends SettingsFragment {
 
         bindPreferenceSummaryToValue(findPreference(PREF_THEME));
         bindPreferenceSummaryToValue(findPreference(PREF_INVISIBLE_BUTTON));
-        bindPreferenceSummaryToValue(findPreference("start_collapsed"));
+        bindPreferenceSummaryToValue(findPreference(PREF_START_COLLAPSED));
         bindPreferenceSummaryToValue(findPreference(PREF_START_BUTTON_IMAGE));
         bindPreferenceSummaryToValue(findPreference(PREF_ICON_PACK_USE_MASK));
         bindPreferenceSummaryToValue(findPreference(PREF_VISUAL_FEEDBACK));
@@ -79,7 +79,7 @@ public class AppearanceFragment extends SettingsFragment {
         findPreference(PREF_BACKGROUND_TINT_PREF).setSummary("#" + String.format("%08x", U.getBackgroundTint(getActivity())).toUpperCase());
         findPreference(PREF_ACCENT_COLOR_PREF).setSummary("#" + String.format("%08x", U.getAccentColor(getActivity())).toUpperCase());
 
-        findPreference("start_collapsed").setEnabled(pref.getBoolean("launcher", false));
+        findPreference(PREF_START_COLLAPSED).setEnabled(pref.getBoolean(PREF_LAUNCHER, false));
 
         finishedLoadingPrefs = true;
     }

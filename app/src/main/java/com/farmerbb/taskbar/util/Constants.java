@@ -162,6 +162,7 @@ public class Constants {
     public static final String PREF_SKIP_QUIT_RECEIVER = "skip_quit_receiver";
     public static final String PREF_SORT_ORDER = "sort_order";
     public static final String PREF_START_BUTTON_IMAGE = "start_button_image";
+    public static final String PREF_START_COLLAPSED = "start_collapsed";
     public static final String PREF_START_MENU_LAYOUT = "start_menu_layout";
     public static final String PREF_START_ON_BOOT = "start_on_boot";
     public static final String PREF_SYS_TRAY = "sys_tray";
