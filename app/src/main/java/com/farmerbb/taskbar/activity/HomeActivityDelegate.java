@@ -110,6 +110,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
     private int endDragIndex;
 
     private boolean isSecondaryHome;
+    private boolean waitingForPermission;
 
     private GestureDetector detector;
 
@@ -437,12 +438,8 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
                     finish();
                 } catch (ActivityNotFoundException e) { /* Gracefully fail */ }
             }
-        } else {
-            overridePendingTransition(0, R.anim.close_anim);
-            SharedPreferences pref = U.getSharedPreferences(this);
-            U.sendBroadcast(this, pref.getBoolean(PREF_START_COLLAPSED, false)
-                    ? ACTION_TEMP_HIDE_TASKBAR : ACTION_TEMP_SHOW_TASKBAR);
-        }
+        } else
+            performOnResumeLogic();
     }
 
     @Override
@@ -450,7 +447,10 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
         super.onStart();
 
         U.sendBroadcast(this, ACTION_HIDE_START_MENU);
+        init();
+    }
 
+    private void init() {
         if(U.canDrawOverlays(this)) {
             if(!U.canBootToFreeform(this)) {
                 setOnHomeScreen(true);
@@ -465,10 +465,10 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
                     startTaskbar();
             } else if(U.launcherIsDefault(this))
                 startFreeformHack();
-        } else
+        } else if(!waitingForPermission)
             dialog = U.showPermissionDialog(U.wrapContext(this),
                     () -> dialog = U.showErrorDialog(U.wrapContext(this), "SYSTEM_ALERT_WINDOW"),
-                    null);
+                    () -> waitingForPermission = true);
     }
 
     private void startTaskbar() {
@@ -1065,6 +1065,18 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
  // @Override
     public void onTopResumedActivityChanged(boolean isTopResumedActivity) {
         if(isTopResumedActivity)
-            overridePendingTransition(0, R.anim.close_anim);
+            performOnResumeLogic();
+    }
+
+    private void performOnResumeLogic() {
+        if(waitingForPermission) {
+            waitingForPermission = false;
+            init();
+        }
+
+        overridePendingTransition(0, R.anim.close_anim);
+        SharedPreferences pref = U.getSharedPreferences(this);
+        U.sendBroadcast(this, pref.getBoolean(PREF_START_COLLAPSED, false)
+				? ACTION_TEMP_HIDE_TASKBAR : ACTION_TEMP_SHOW_TASKBAR);
     }
 }
